@@ -15,23 +15,24 @@
 			<div class="form-group">
 				<label asp-for="Product.Name" class="control-label"></label>
 				<input asp-for="Product.Name" class="form-control" />
-				<span asp-asp-validation-for="Category.Name" class="text-danger"></span>
+				<span asp-validation-for="Product.Name" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="Product.Price" class="control-label"></label>
 				<input asp-for="Product.Price" class="form-control" />
-				<span asp-asp-validation-for="Category.Price" class="text-danger"></span>
+				<span asp-validation-for="Product.Price" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="Product.Stock" class="control-label"></label>
 				<input asp-for="Product.Stock" class="form-control" />
-				<span asp-asp-validation-for="Category.Stock" class="text-danger"></span>
+				<span asp-validation-for="Product.Stock" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="Product.CategoryId" class="control-label"></label>
-				<input asp-for="Product.CategoryId" class="form-control" />
-				<span asp-asp-validation-for="Category.CategoryId" class="text-danger"></span>
+				<select asp-for="Product.CategoryId" class="form-control" asp-items="@(Model.Categories)"></select>
+				<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
 			</div>
+
 			<div class="form-group mt-3">
 				<input type="submit" value="Create" class="btn btn-success" />
 				<a asp-page="Index" class="btn btn-primary"> Back to List</a>

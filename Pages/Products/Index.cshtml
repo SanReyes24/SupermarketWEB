@@ -22,7 +22,7 @@
 				@Html.DisplayNameFor(model => model.Products[0].Stock)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Products[0].CategoryId)
+				@Html.DisplayNameFor(model => model.Products[0].Category.Id)
 			</th>
 			<th>Actions</th>
 		</tr>
@@ -35,12 +35,17 @@
 					@Html.DisplayFor(modelItem => item.Name)
 				</td>
 				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
 					@Html.DisplayFor(modelItem => item.Stock)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.CategoryId)
+					@Html.DisplayFor(modelItem => item.Category.Id)
 				</td>
-
+				<td>
+					<a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+				</td>
 				<td>
 					<span></span>
 				</td>
