@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SupermarketWEB.Data;
 using SupermarketWEB.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SupermarketWEB.Pages.Products
 {
-    public class EditModel : PageModel
-    {
+	public class EditModel : PageModel
+	{
 		private readonly SupermarketContext _context;
 
 		public EditModel(SupermarketContext context)
@@ -15,24 +19,33 @@ namespace SupermarketWEB.Pages.Products
 			_context = context;
 		}
 
-		[BindProperty]
+		public List<SelectListItem> Categories { get; set; }
 
-		public Product Product { get; set; } = default!;
+		[BindProperty]
+		public Product Product { get; set; }
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
-			if (id == null || _context.Products == null)
+			if (id == null)
 			{
 				return NotFound();
 			}
 
-			var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+			Product = await _context.Products.FindAsync(id);
 
-			if (product == null)
+			if (Product == null)
 			{
 				return NotFound();
 			}
-			Product = product;
+
+			Categories = await _context.Categories.Select(c =>
+				new SelectListItem
+				{
+					Value = c.Id.ToString(),
+					Text = c.Name,
+					Selected = (c.Id == Product.CategoryId)
+				}).ToListAsync();
+
 			return Page();
 		}
 
@@ -40,6 +53,28 @@ namespace SupermarketWEB.Pages.Products
 		{
 			if (!ModelState.IsValid)
 			{
+				Categories = await _context.Categories.Select(c =>
+					new SelectListItem
+					{
+						Value = c.Id.ToString(),
+						Text = c.Name,
+						Selected = (c.Id == Product.CategoryId)
+					}).ToListAsync();
+				return Page();
+			}
+
+			var category = await _context.Categories.FindAsync(Product.CategoryId);
+
+			if (category == null)
+			{
+				ModelState.AddModelError("", "Invalid category selected.");
+				Categories = await _context.Categories.Select(c =>
+					new SelectListItem
+					{
+						Value = c.Id.ToString(),
+						Text = c.Name,
+						Selected = (c.Id == Product.CategoryId)
+					}).ToListAsync();
 				return Page();
 			}
 
@@ -66,7 +101,7 @@ namespace SupermarketWEB.Pages.Products
 
 		private bool ProductExists(int id)
 		{
-			return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+			return _context.Products.Any(p => p.Id == id);
 		}
 	}
 }
