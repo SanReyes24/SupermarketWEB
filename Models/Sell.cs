@@ -7,12 +7,12 @@ namespace SupermarketWEB.Models
 	{
 		public int Id { get; set; }
 		public string? Date { get; set; } = default!;
-		public int? CustomerId { get; set; } = default!;
+		public string? CustomerId { get; set; } = default!;
 		public string? ProductName { get; set; } = default!;
 		public int? Quantity { get; set; } = default!;
-		[Column(TypeName = "decimal(15,2)")]
-		public decimal? ProductPrice { get; set; } = default!;
-		
+
+		//public decimal? ProductPrice { get; set; } = default!;
+		public string? ProductPrice { get; set; } = default!;
 		[Column(TypeName = "decimal(15,2)")]
 		public decimal? TotalSale { get; set; } = default!;
 		public string? PayModeName { get; set; } = default!;
