@@ -31,7 +31,7 @@ namespace SupermarketWEB.Pages.Sales
 	.Where(c => !string.IsNullOrEmpty(c.Name))
 	.Select(c => new SelectListItem
 	{
-		Value = c.Id.ToString(),
+		Value = c.Name, // Asignar el nombre en lugar del ID
 		Text = c.Name
 	})
 	.ToList();
@@ -40,28 +40,29 @@ namespace SupermarketWEB.Pages.Sales
 				.Where(p => !string.IsNullOrEmpty(p.Name))
 				.Select(p => new SelectListItem
 				{
-					Value = p.Id.ToString(),
+					Value = p.Name, // Asignar el nombre en lugar del ID
 					Text = p.Name
-				}).ToList();
+				})
+				.ToList();
 
 			Product3 = _context.Products
 				.Where(p => p.Price != null)
 				.Select(p => new SelectListItem
 				{
-					Value = p.Id.ToString(),
+					Value = p.Price.ToString(), // Asignar el precio como cadena en lugar del ID
 					Text = p.Price.ToString()
-				}).ToList();
-
-
+				})
+				.ToList();
 
 			PayMode = _context.PayModes
 				.Where(pm => !string.IsNullOrEmpty(pm.Name))
 				.Select(pm => new SelectListItem
 				{
-					Value = pm.Id.ToString(),
+					Value = pm.Name, // Asignar el nombre en lugar del ID
 					Text = pm.Name
 				})
 				.ToList();
+
 
 			Sell.Date = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
 
@@ -98,9 +99,13 @@ namespace SupermarketWEB.Pages.Sales
 
 			// Recupera la categoría seleccionada
 			var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Name == Sell.CustomerId);
-			var productName = await _context.Products.FirstOrDefaultAsync(c => c.Name == Sell.ProductName);
-			var productPrice = await _context.Products.FirstOrDefaultAsync(c => c.Price.ToString() == Sell.ProductPrice);
-			var payModeName = await _context.PayModes.FirstOrDefaultAsync(c => c.Name == Sell.PayModeName);
+
+			var productName = await _context.Products.FirstOrDefaultAsync(p => p.Name == Sell.ProductName);
+
+			var productPrice = await _context.Products.FirstOrDefaultAsync(p => p.Price.ToString() == Sell.ProductPrice);
+
+			var payModeName = await _context.PayModes.FirstOrDefaultAsync(pm => pm.Name == Sell.PayModeName);
+
 			/*
 			if (customer == null || productName==null || productPrice.Price <=0 || payModeName==null )
 			{
