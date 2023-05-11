@@ -4,137 +4,124 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SupermarketWEB.Data;
 using SupermarketWEB.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SupermarketWEB.Pages.Sales
 {
-	public class EditModel : PageModel
-	{
-		private readonly SupermarketContext _context;
+    public class EditModel : PageModel
+    {
+        private readonly SupermarketContext _context;
 
-		public EditModel(SupermarketContext context)
-		{
-			_context = context;
-		}
-		public List<SelectListItem> Customer { get; set; }
-		public List<SelectListItem> Product2 { get; set; }
-		public List<SelectListItem> Product3 { get; set; }
-		//public List<Product> Product3 { get; set; }
-		public List<SelectListItem> PayMode { get; set; }
-		[BindProperty]
+        public EditModel(SupermarketContext context)
+        {
+            _context = context;
+        }
 
-		public Sell Sell { get; set; } = default!;
+        [BindProperty]
+        public Sell Sell { get; set; }
+        public SelectList Customer { get; set; }
+        public SelectList Product2 { get; set; }
+        public SelectList PayMode { get; set; }
 
-		public async Task<IActionResult> OnGetAsync(int? id)
-		{
-			Customer = _context.Customers
-				.Select(c => new SelectListItem
-				{
-					Value = c.Id.ToString(),
-					Text = c.Name
-				}).ToList();
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-			Product2 = _context.Products
-			.Select(c => new SelectListItem
-			{
-				Value = c.Id.ToString(),
-				Text = c.Name
+            Sell = await _context.Sales.FirstOrDefaultAsync(m => m.Id == id);
 
-			}).ToList();
+            if (Sell == null)
+            {
+                return NotFound();
+            }
 
-			Product3 = _context.Products
-				.Select(c => new SelectListItem
-				{
-					Value = c.Id.ToString(),
-					Text = c.Price.ToString()
+            Customer = new SelectList(_context.Customers
+                .Where(c => !string.IsNullOrEmpty(c.Name))
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Name,
+                    Text = c.Name
+                }), "Value", "Text", Sell.CustomerId);
 
-				}).ToList();
+            Product2 = new SelectList(_context.Products
+                .Where(p => !string.IsNullOrEmpty(p.Name))
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Name,
+                    Text = $"{p.Name} - {p.Price}"
+                }), "Value", "Text", Sell.ProductName);
 
+            PayMode = new SelectList(_context.PayModes
+                .Where(pm => !string.IsNullOrEmpty(pm.Name))
+                .Select(pm => new SelectListItem
+                {
+                    Value = pm.Name,
+                    Text = pm.Name
+                }), "Value", "Text", Sell.PayModeName);
 
-			PayMode = _context.PayModes
-				.Select(c => new SelectListItem
-				{
-					Value = c.Id.ToString(),
-					Text = c.Name
-				}).ToList();
+            return Page();
+        }
 
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                Customer = new SelectList(_context.Customers
+                    .Where(c => !string.IsNullOrEmpty(c.Name))
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Name,
+                        Text = c.Name
+                    }), "Value", "Text");
 
-			if (id == null || _context.Sales == null)
-			{
-				return NotFound();
-			}
+                Product2 = new SelectList(_context.Products
+                    .Where(p => !string.IsNullOrEmpty(p.Name))
+                    .Select(p => new SelectListItem
+                    {
+                        Value = p.Name,
+                        Text = $"{p.Name} - {p.Price}"
+                    }), "Value", "Text");
 
-			var sell = await _context.Sales.FirstOrDefaultAsync(m => m.Id == id);
+                PayMode = new SelectList(_context.PayModes
+                    .Where(pm => !string.IsNullOrEmpty(pm.Name))
+                    .Select(pm => new SelectListItem
+                    {
+                        Value = pm.Name,
+                        Text = pm.Name
+                    }), "Value", "Text");
 
-			if (sell == null)
-			{
-				return NotFound();
-			}
-			Sell = sell;
-			return Page();
+                return Page();
+            }
 
-			Customer = _context.Customers
-				.Select(c => new SelectListItem
-				{
-					Value = c.Id.ToString(),
-					Text = c.Name
-				}).ToList();
+            _context.Attach(Sell).State = EntityState.Modified;
 
-			Product2 = _context.Products
-			.Select(c => new SelectListItem
-			{
-				Value = c.Id.ToString(),
-				Text = c.Name
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SellExists(Sell.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-			}).ToList();
+            return RedirectToPage("./Index");
+        }
 
-			Product3 = _context.Products
-				.Select(c => new SelectListItem
-				{
-					Value = c.Id.ToString(),
-					Text = c.Price.ToString()
-
-				}).ToList();
-
-
-			PayMode = _context.PayModes
-				.Select(c => new SelectListItem
-				{
-					Value = c.Id.ToString(),
-					Text = c.Name
-				}).ToList();
-		}
-
-		public async Task<IActionResult> OnPostAsync()
-		{
-			if (!ModelState.IsValid)
-			{
-				return Page();
-			}
-
-			_context.Attach(Sell).State = EntityState.Modified;
-
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!CustomerExists(Sell.Id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-
-			return RedirectToPage("./Index");
-		}
-
-		private bool CustomerExists(int id)
-		{
-			return (_context.Sales?.Any(e => e.Id == id)).GetValueOrDefault();
-		}
-	}
+        private bool SellExists(int id)
+        {
+            return _context.Sales.Any(e => e.Id == id);
+        }
+    }
 }
+
+

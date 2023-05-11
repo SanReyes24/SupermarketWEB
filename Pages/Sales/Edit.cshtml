@@ -1,68 +1,72 @@
 ﻿@page
 @model SupermarketWEB.Pages.Sales.EditModel
 @{
-	ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit";
 }
 
 <h1>Edit</h1>
-
-<h4>Sell</h4>
+<h4>Sales</h4>
 <hr />
 <div class="row">
-	<div class="col-md-4">
-		<form method="post">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<input type="hidden" asp-for="Sell.Id" />
-			<div class="form-group">
-				<label asp-for="Sell.Date" class="control-label"></label>
-				<input asp-for="Sell.Date" class="form-control" />
-				<span asp-validation-for="Sell.Date" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Sell.CustomerId" class="control-label"></label>
-				<select asp-for="Sell.CustomerId" class="form-control" asp-items="@(Model.Customer)"></select>
-				<span asp-validation-for="Sell.CustomerId" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Sell.ProductName" class="control-label"></label>
-				<select asp-for="Sell.ProductName" class="form-control" asp-items="@(Model.Product2)"></select>
-				<span asp-validation-for="Sell.ProductName" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Sell.Quantity" class="control-label"></label>
-				<input asp-for="Sell.Quantity" class="form-control" />
-				<span asp-validation-for="Sell.Quantity" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Sell.ProductPrice" class="control-label"></label>
-				<select asp-for="Sell.ProductPrice" class="form-control" asp-items="@Model.Product3"></select>
-				<span asp-validation-for="Sell.ProductPrice" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Sell.TotalSale" class="control-label"></label>
-				<input asp-for="Sell.TotalSale" class="form-control" />
-				<span asp-validation-for="Sell.TotalSale" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Sell.PayModeName" class="control-label"></label>
-				<select asp-for="Sell.PayModeName" class="form-control" asp-items="@(Model.PayMode)"></select>
-				<span asp-validation-for="Sell.PayModeName" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Sell.Observation" class="control-label"></label>
-				<input asp-for="Sell.Observation" class="form-control" />
-				<span asp-validation-for="Sell.Observation" class="text-danger"></span>
-			</div>
-			<div class="form-group mt-3">
-				<input type="submit" value="Save" class="btn btn-success" />
-				<a asp-page="./Index" class="btn btn-primary"> Back to List</a>
-			</div>
-		</form>
-	</div>
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Sell.Id" />
+
+            <div class="form-group">
+                <label asp-for="Sell.Date" class="control-label"></label>
+                <input asp-for="Sell.Date" class="form-control datepicker" />
+                <span asp-validation-for="Sell.Date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Sell.CustomerId" class="control-label"></label>
+                <select asp-for="Sell.CustomerId" class="form-control" asp-items="@(Model.Customer)"></select>
+                <span asp-validation-for="Sell.CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sell.ProductName" class="control-label"></label>
+                <select asp-for="Sell.ProductName" class="form-control" asp-items="@(Model.Product2)"></select>
+                <span asp-validation-for="Sell.ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sell.Quantity" class="control-label"></label>
+                <input asp-for="Sell.Quantity" class="form-control" />
+                <span asp-validation-for="Sell.Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sell.ProductPrice" class="control-label"></label>
+                <input asp-for="Sell.ProductPrice" class="form-control" />
+                <span asp-validation-for="Sell.ProductPrice" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Sell.TotalSale" class="control-label"></label>
+                <input asp-for="Sell.TotalSale" class="form-control" type="text" maxlength="15" />
+                <span asp-validation-for="Sell.TotalSale" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Sell.PayModeName" class="control-label"></label>
+                <select asp-for="Sell.PayModeName" class="form-control" asp-items="@(Model.PayMode)"></select>
+                <span asp-validation-for="Sell.PayModeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sell.Observation" class="control-label"></label>
+                <input asp-for="Sell.Observation" class="form-control" />
+                <span asp-validation-for="Sell.Observation" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-page="Index" class="btn btn-primary"> Back to List</a>
+            </div>
+        </form>
+    </div>
 </div>
 
+
 @section Scripts {
-	@{
-		await Html.RenderPartialAsync("_ValidationScriptsPartial");
-	}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
