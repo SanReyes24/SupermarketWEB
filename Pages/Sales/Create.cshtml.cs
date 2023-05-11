@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SupermarketWEB.Data;
 using SupermarketWEB.Models;
+using System.Globalization;
 
 namespace SupermarketWEB.Pages.Sales
 {
@@ -24,36 +25,46 @@ namespace SupermarketWEB.Pages.Sales
 		public List<SelectListItem> PayMode { get; set; }
 		public void OnGet()
 		{
+			Sell = new Sell();
+
 			Customer = _context.Customers
-				.Select(c => new SelectListItem
-				{
-					Value = c.Id.ToString(),
-					Text = c.Name
-				}).ToList();
+	.Where(c => !string.IsNullOrEmpty(c.Name))
+	.Select(c => new SelectListItem
+	{
+		Value = c.Id.ToString(),
+		Text = c.Name
+	})
+	.ToList();
 
 			Product2 = _context.Products
-			.Select(c => new SelectListItem
-			{
-				Value = c.Id.ToString(),
-				Text = c.Name
-
-			}).ToList();
+				.Where(p => !string.IsNullOrEmpty(p.Name))
+				.Select(p => new SelectListItem
+				{
+					Value = p.Id.ToString(),
+					Text = p.Name
+				}).ToList();
 
 			Product3 = _context.Products
-				.Select(c => new SelectListItem
+				.Where(p => p.Price != null)
+				.Select(p => new SelectListItem
 				{
-					Value = c.Id.ToString(),
-					Text = c.Price.ToString()
-
+					Value = p.Id.ToString(),
+					Text = p.Price.ToString()
 				}).ToList();
+
 
 
 			PayMode = _context.PayModes
-				.Select(c => new SelectListItem
+				.Where(pm => !string.IsNullOrEmpty(pm.Name))
+				.Select(pm => new SelectListItem
 				{
-					Value = c.Id.ToString(),
-					Text = c.Name
-				}).ToList();
+					Value = pm.Id.ToString(),
+					Text = pm.Name
+				})
+				.ToList();
+
+			Sell.Date = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
+
 		}
 
 		[BindProperty]

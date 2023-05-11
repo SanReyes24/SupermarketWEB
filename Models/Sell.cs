@@ -6,7 +6,8 @@ namespace SupermarketWEB.Models
 	public class Sell
 	{
 		public int Id { get; set; }
-		public string? Date { get; set; } = default!;
+		public string Date { get; set; }
+
 		public string? CustomerId { get; set; } = default!;
 		public string? ProductName { get; set; } = default!;
 		public int? Quantity { get; set; } = default!;

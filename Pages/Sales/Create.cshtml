@@ -13,9 +13,10 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
 				<label asp-for="Sell.Date" class="control-label"></label>
-				<input asp-for="Sell.Date" class="form-control" />
+				<input asp-for="Sell.Date" class="form-control datepicker" />
 				<span asp-validation-for="Sell.Date" class="text-danger"></span>
 			</div>
+
 			<div class="form-group">
 				<label asp-for="Sell.CustomerId" class="control-label"></label>
 				<select asp-for="Sell.CustomerId" class="form-control" asp-items="@(Model.Customer)"></select>
@@ -65,5 +66,16 @@
 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('.datepicker').datepicker({
+				format: 'dd/mm/yyyy',
+				autoclose: true
+			});
+		});
+	</script>
 }
+
 
