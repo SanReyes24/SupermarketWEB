@@ -34,9 +34,10 @@
 			</div>
 			<div class="form-group">
 				<label asp-for="Sell.ProductPrice" class="control-label"></label>
-				<select asp-for="Sell.ProductPrice" class="form-control" asp-items="@Model.Product3"></select>
-				<span asp-validation-for="Sell.ProductPrice" class="text-danger"></span>
+				<select asp-for="Sell.ProductName" class="form-control" asp-items="@(Model.Product2)"></select>
+				<span asp-validation-for="Sell.ProductName" class="text-danger"></span>
 			</div>
+
 			<div class="form-group">
 				<label asp-for="Sell.TotalSale" class="control-label"></label>
 				<input asp-for="Sell.TotalSale" class="form-control" type="text" maxlength="15" />
