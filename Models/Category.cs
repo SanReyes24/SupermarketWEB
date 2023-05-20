@@ -1,5 +1,8 @@
-﻿namespace SupermarketWEB.Models
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace SupermarketWEB.Models
 {
+    [Authorize]
     public class Category
     {
         public int Id { get; set; }

@@ -1,6 +1,9 @@
-﻿namespace SupermarketWEB.Models
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace SupermarketWEB.Models
 {
-	public class PayMode
+    [Authorize]
+    public class PayMode
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }

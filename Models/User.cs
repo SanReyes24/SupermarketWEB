@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace SupermarketWEB.Models
 {
-    public class User
+	[Authorize]
+	public class User
     {
+        public int Id { get; set; }
+
         [Required]
         [DataType(DataType.EmailAddress)]
 

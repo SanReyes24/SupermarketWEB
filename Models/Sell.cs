@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SupermarketWEB.Models
 {
-	public class Sell
+    [Authorize]
+    public class Sell
 	{
 		public int Id { get; set; }
 		public string Date { get; set; }

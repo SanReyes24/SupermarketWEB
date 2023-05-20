@@ -1,0 +1,44 @@
+﻿@page
+@model SupermarketWEB.Pages.Users.IndexModel
+@{
+	ViewData["Title"] = "Index Users";
+}
+
+<h1>Index Users</h1>
+
+<p>
+	<a asp-page="Create" class="btn btn-success"> Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Users[0].Email)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Users[0].Password)
+			</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Users)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Email)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Password)
+				</td>
+				<td>
+					<a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+					<a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+				</td>
+				<td>
+					<span></span>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
