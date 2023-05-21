@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SupermarketWEB.Models
 {
-    [Authorize]
     public class Sell
 	{
 		public int Id { get; set; }

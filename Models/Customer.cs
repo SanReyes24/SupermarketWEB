@@ -2,7 +2,6 @@
 
 namespace SupermarketWEB.Models
 {
-    [Authorize]
     public class Customer
 	{
 		public int Id { get; set; }

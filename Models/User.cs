@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SupermarketWEB.Models
 {
-	[Authorize]
 	public class User
     {
         public int Id { get; set; }

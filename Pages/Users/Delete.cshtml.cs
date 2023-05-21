@@ -6,11 +6,11 @@ using SupermarketWEB.Models;
 
 namespace SupermarketWEB.Pages.Users
 {
-	public class EditModel : PageModel
-	{
+    public class DeleteModel : PageModel
+    {
 		private readonly SupermarketContext _context;
 
-		public EditModel(SupermarketContext context)
+		public DeleteModel(SupermarketContext context)
 		{
 			_context = context;
 		}
@@ -32,42 +32,28 @@ namespace SupermarketWEB.Pages.Users
 			{
 				return NotFound();
 			}
-			User = user;
+			else
+			{
+				User = user;
+			}
 			return Page();
 		}
-
-		public async Task<IActionResult> OnPostAsync()
+		public async Task<IActionResult> OnPostAsync(int? id)
 		{
-			if (!ModelState.IsValid)
+			if (id == null || _context.Users == null)
 			{
-				return Page();
+				return NotFound();
 			}
+			var user = await _context.Users.FindAsync(id);
 
-			_context.Attach(User).State = EntityState.Modified;
-
-			try
+			if (user != null)
 			{
+				User = user;
+				_context.Users.Remove(User);
 				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!UserExists(User.Id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
 			}
 
 			return RedirectToPage("./Index");
 		}
-
-		private bool UserExists(int id)
-		{
-			return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-		}
 	}
 }
-

@@ -2,7 +2,6 @@
 
 namespace SupermarketWEB.Models
 {
-    [Authorize]
     public class PayMode
 	{
 		public int Id { get; set; }
